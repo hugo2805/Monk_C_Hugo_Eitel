@@ -1,6 +1,7 @@
 # depslib dependency file v1.0
-1607638204 source:d:\algo\c\td_sdl\monk_c_hugo_eitel\monk_c_hugo_eitel\main.c
+1607657940 source:d:\algo\c\td_sdl\monk_c_hugo_eitel\monk_c_hugo_eitel\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
+	<time.h>
 
