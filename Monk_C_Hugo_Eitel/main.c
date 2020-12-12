@@ -14,6 +14,7 @@
 
 //Prototypes_______________________________________________________________________________________________________________________________
 
+void init_tab_traces();
 void color(int, int);
 void Affiche_Titre();
 void Affiche_Accueil();
@@ -24,6 +25,9 @@ void Affiche_Legende();
 void Cb_pisteur();
 void Placement_pisteur();
 void Placement_Monstre();
+void traces_pisteurs();
+void traces_Monstre();
+void Rapport_Pisteur();
 
 
 
@@ -34,19 +38,26 @@ void Placement_Monstre();
         int y;
     } coord_Pisteur;
 
-        typedef struct coord_Monstre{
+    typedef struct coord_Monstre{
         int x;
         int y;
     } coord_Monstre;
+
+
+
+
 
 //Programme_Principal______________________________________________________________________________________________________________________
 
 int main()
 {
         // Déclaration des variables
-    int n_i, n_j;
+
     int n_pisteur;
+    int n_tour = 1;
     int *pn_pisteur = &n_pisteur;
+    coord_Monstre Point_Monstre;
+
 
 
 
@@ -80,6 +91,7 @@ int main()
    };
 
     //Appel des differentes fonction et procedures
+    init_tab_traces(Tab_Traces_Monstre, Tab_Traces_Pisteur);
     Affiche_Titre();
     Affiche_Accueil();
     change_ecran();
@@ -89,7 +101,18 @@ int main()
     Affiche_Legende();
     Cb_Pisteurs(&pn_pisteur);
     Placement_pisteur(&pn_pisteur,T_Affiche_Terrain,T_Pisteur);
-    Placement_Monstre(T_Affiche_Terrain, Tab_Traces_Monstre);
+    Placement_Monstre(T_Affiche_Terrain, Tab_Traces_Monstre, &Point_Monstre);
+    //Boucle de Gameplay Principal
+    while (VIE_MONSTRE > 0 || n_pisteur > 0)
+    {
+        traces_pisteurs(&pn_pisteur, Tab_Traces_Pisteur, T_Pisteur);
+        traces_Monstre(Tab_Traces_Monstre, &Point_Monstre, &n_tour);
+        change_ecran();
+        Rapport_Pisteur(&pn_pisteur, T_Pisteur, Tab_Traces_Monstre, T_Affiche_Terrain);
+
+
+        n_tour++;
+    }
 
 
 
@@ -105,6 +128,19 @@ void color(int t,int f)
 {
         HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
             SetConsoleTextAttribute(H,f*16+t);
+}
+
+//Procedure qui initialise toutes les valeurs des tableaux de traces a 0
+void init_tab_traces(int tab_monstre[HAUTEUR][LARGEUR], int tab_pisteur[HAUTEUR][LARGEUR])
+{
+    int i, j;
+
+    for (i=0; i<HAUTEUR; i++){
+        for(j=0;j<LARGEUR;j++){
+            tab_monstre[i][j]= 0;
+            tab_pisteur[i][j]= 0;
+        }
+    }
 }
 
 //Procedure d'affichage du titre en rouge
@@ -171,6 +207,7 @@ void Affiche_Regles()
 //Procedure pour effacer l'ecran et afficher la suite
 void change_ecran()
 {
+    fflush(stdin);
     color(1,0);
     printf("Appuyez sur Entree pour passer a la suite...\n");
     getchar();
@@ -311,7 +348,7 @@ void Placement_pisteur(int *pn_pisteur,char Terrain[HAUTEUR][LARGEUR], struct co
 }
 
 //Procedure qui genere la position de depart du monstre tout en s'assurant qu'il ne soit pas sur ou dans le voisinage d'un pisteur
-void Placement_Monstre(char Terrain[HAUTEUR][LARGEUR], int Tab_Monstre[HAUTEUR][LARGEUR])
+void Placement_Monstre(char Terrain[HAUTEUR][LARGEUR], int Tab_Monstre[HAUTEUR][LARGEUR],coord_Monstre *Point_Monstre)
 {
     int Monstre_x, Monstre_y;
     int i, j, k, l, count;
@@ -328,14 +365,19 @@ void Placement_Monstre(char Terrain[HAUTEUR][LARGEUR], int Tab_Monstre[HAUTEUR][
         if (Terrain[i][j]== ' ')
         {
 
-             if (i-1<0){Cg_Y = 0;} else {Cg_Y = i-1;}
+             /*if (i-1<0){Cg_Y = 0;} else {Cg_Y = i-1;}
              if (i+1>=HAUTEUR){Cd_Y = HAUTEUR-1;} else {Cd_Y = i+1;}
              if (j-1<0){Cg_X = 0;} else {Cg_X = j-1;}
-             if (j+1>=LARGEUR){Cd_X = LARGEUR-1;} else {Cd_X = j+1;}
+             if (j+1>=LARGEUR){Cd_X = LARGEUR-1;} else {Cd_X = j+1;}*/
+
+             Cg_Y = i-1;
+             Cd_Y = i+1;
+             Cg_X = j-1;
+             Cg_Y = j+1;
 
              //Ces Instructions permettent de vérifier que je lis bien les 8 cases autour de ma position aleatoire
 
-             /*printf("i = %d, j = %d",i , j);  //ici on affiche le point centrale donc la potentielle position du monstre
+            /* printf("i = %d, j = %d",i , j);  //ici on affiche le point centrale donc la potentielle position du monstre
              printf("\n");
              printf("Cg_X = %d, Cg_Y = %d" ,Cg_X, Cg_Y);  // ici on affiche la position de la case en haut a gauche de notre voisinage donc la numero 1
             printf("\n");
@@ -361,12 +403,156 @@ void Placement_Monstre(char Terrain[HAUTEUR][LARGEUR], int Tab_Monstre[HAUTEUR][
         }
 
 
+
+
+
     }
 
-    coord_Monstre.x = j;
-    coord_Monstre.y= i;
-    Tab_Monstre[i][j] = 15;
+    Tab_Monstre[i][j] = 16;
+    Point_Monstre->x = j;
+    Point_Monstre->y = i;
+
 }
+
+//Procedure qui enregistre les traces des pisteurs
+void traces_pisteurs(int *pn_pisteurs, int T_Traces_Pist[HAUTEUR][LARGEUR], struct coord_Pisteur T_Pisteur[PISTEUR_MAX])
+{
+    int i;
+    for (i=1; i <=*pn_pisteurs;i++)
+    {
+        T_Traces_Pist[T_Pisteur[i].x][T_Pisteur[i].y] = 5;
+    }
+}
+
+void traces_Monstre( int Tab_Monstre[HAUTEUR][LARGEUR],coord_Monstre *Point_Monstre, int *pn_Tour)
+{
+    int i, j, val;
+    if (*pn_Tour > 1)
+        {
+            for (i=0; i=HAUTEUR;i++){
+        for (j=0;j=LARGEUR;j++){
+
+            if (Tab_Monstre[i][j]>0)
+                {
+                val = Tab_Monstre[i][j];
+                Tab_Monstre[i][j] = val-1;
+                }
+
+
+            }
+        }
+    }
+
+    Tab_Monstre[Point_Monstre->x][Point_Monstre->y] = 16;
+}
+
+void Rapport_Pisteur(int *pn_pisteurs,  struct coord_Pisteur T_Pisteur[PISTEUR_MAX], int Tab_Monstre[HAUTEUR][LARGEUR], char Terrain[HAUTEUR][LARGEUR])
+{
+    int n_i,i,j, k, l, Qcase, fraicheur, count;
+    int Cg_X, Cg_Y, Cd_X, Cd_Y;
+    char reponse;
+
+
+    for (n_i=1; n_i<=*pn_pisteurs;n_i++)
+    {
+        Qcase = 0;
+        i = T_Pisteur[n_i].y;
+        j = T_Pisteur[n_i].x;
+
+        Terrain[i][j]= '!';
+        system('cls');
+        Affiche_Terrain(Terrain);
+        Affiche_Legende();
+        Terrain[i][j]= 'P';
+
+
+        printf("******************************************-RAPPORT_DU_PISTEUR_%d-********************************************************\n", n_i);
+
+
+             if (i-1<0){Cg_Y = 0;} else {Cg_Y = i-1;}
+             if (i+1>=HAUTEUR){Cd_Y = HAUTEUR-1;} else {Cd_Y = i+1;}
+             if (j-1<0){Cg_X = 0;} else {Cg_X = j-1;}
+             if (j+1>=LARGEUR){Cd_X = LARGEUR-1;} else {Cd_X = j+1;}
+
+            /*  Cg_Y = i-1;
+             Cd_Y = i+1;
+             Cg_X = j-1;
+             Cg_Y = j+1;*/
+
+
+             //Ces Instructions permettent de vérifier que je lis bien les 8 cases autour de ma position aleatoire
+
+            /* printf("i = %d, j = %d",i , j);  //ici on affiche le point centrale donc la potentielle position du monstre
+             printf("\n");
+             printf("Cg_X = %d, Cg_Y = %d" ,Cg_X, Cg_Y);  // ici on affiche la position de la case en haut a gauche de notre voisinage donc la numero 1
+            printf("\n");
+             printf("Cd_X = %d, Cd_Y = %d" ,Cd_X, Cd_Y);  // ici on affiche la position de la case en bas a droite de notre voisinage donc la numero 9
+             printf("\n\n");*/
+
+
+             count = 0;
+
+             for (k=Cg_Y;k<=Cd_Y;k++)
+                {
+                    for (l=Cg_X;l<=Cd_X;l++)
+                    {
+                        Qcase++;
+
+                        if (Tab_Monstre[k][l]!= 0 && Tab_Monstre[k][l] < 16)
+                        {
+                            fraicheur = Tab_Monstre[k][l];
+                            printf("Traces en %d, de fraicheur : %d\n", Qcase, fraicheur);
+                        }
+                        if (Tab_Monstre[k][l] == 16)
+                        {
+                            printf("Je vois le Monstre");
+                            printf("Si vous voulez tirer, appuyez sur T, sinon appuyez sur N : \n");
+                            scanf("%c", reponse);
+                            if (reponse == 'N' || reponse == 'n')
+                            {
+                                Tir();
+                            }
+                            else
+                            {
+                                printf("Une prochaine fois peut-etre !");
+                            }
+                        }
+
+                        if (Tab_Monstre[k][l]== 0)
+                        {
+                            count++;
+                        }
+                        if (count == 9)
+                        {
+                        printf("Rien en 1,2,3,4,5,6,7,8,9\n");
+                        }
+
+
+                    }
+
+                }
+
+            fflush(stdin);
+            printf("Pour passer a la suite appuyez sur entree\n");
+
+            getchar();
+
+
+
+    }
+
+
+}
+
+void Tir ()
+{
+
+}
+
+
+
+
+
 
 
 
