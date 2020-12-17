@@ -56,10 +56,16 @@ int main()
     Affiche_Legende();
     Affiche_nbTour(&n_tour);
     Cb_Pisteurs(&pn_pisteur);
+    n_pisteur = &pn_pisteur;
     Placement_pisteur(&pn_pisteur,T_Affiche_Terrain,T_Pisteur, &n_tour);
     Placement_Monstre(T_Affiche_Terrain, Tab_Traces_Monstre, &Point_Monstre);
     //Boucle de Gameplay Principal
-    while (vie_Monstre > 0 || n_pisteur > 0)
+
+        //vie_Monstre = 0; // test ecran de victoire
+        //n_pisteur = 0;    // test ecran de defaite
+
+
+    while (vie_Monstre > 0 && n_pisteur > 0)
     {
         traces_pisteurs(&pn_pisteur, Tab_Traces_Pisteur, T_Pisteur);
         traces_Monstre(Tab_Traces_Monstre, &Point_Monstre, &n_tour);
@@ -68,6 +74,16 @@ int main()
         Deplace_Pisteur(&pn_pisteur, T_Affiche_Terrain, &n_tour, T_Pisteur);
         Deplace_Monstre(Tab_Traces_Monstre, &Point_Monstre, T_Affiche_Terrain, Tab_Traces_Pisteur);
         n_tour++;
+    }
+
+    if (vie_Monstre <= 0)
+    {
+        ecran_victoire(&n_tour);
+    }
+
+    if (n_pisteur <= 0)
+    {
+        ecran_defaite();
     }
 
 

@@ -362,6 +362,8 @@ void Rapport_Pisteur(int *pn_pisteurs, struct coord_Pisteur T_Pisteur[PISTEUR_MA
            printf("Le pisteur %d, s'est fait devorer !\n", n_i);
            T_Pisteur[n_i].x = 0;
            T_Pisteur[n_i].y = 0;
+           *pn_pisteurs = *pn_pisteurs-1;
+           n_i++;
         }
 
         color(12,0);
@@ -597,11 +599,7 @@ void Deplace_Pisteur(int *pn_pisteurs, char Terrain[HAUTEUR][LARGEUR], int *pn_T
 
         }
     }
-            fflush(stdin);
-            color(1,0);
-            printf("Pour passer a la suite appuyez sur entree\n");
-            color(15,0);
-            getchar();
+
 }
 
 //Procedure qui deplace le monstre
@@ -693,7 +691,7 @@ void Deplace_Monstre( int Tab_Monstre[HAUTEUR][LARGEUR],coord_Monstre *Point_Mon
             Tab_Monstre[i-RANGE_MONSTRE][j] = 16;
             Point_Monstre->x = j;
             Point_Monstre->y = i-RANGE_MONSTRE;
-             isOk =1;
+            isOk =1;
 
             }
             else
@@ -722,7 +720,7 @@ void Deplace_Monstre( int Tab_Monstre[HAUTEUR][LARGEUR],coord_Monstre *Point_Mon
             Tab_Monstre[i+RANGE_MONSTRE][j] = 16;
             Point_Monstre->x = j;
             Point_Monstre->y = i+RANGE_MONSTRE;
-             isOk =1;
+            isOk =1;
 
             }
             else
@@ -736,7 +734,7 @@ void Deplace_Monstre( int Tab_Monstre[HAUTEUR][LARGEUR],coord_Monstre *Point_Mon
             Tab_Monstre[i][j-RANGE_MONSTRE] = 16;
             Point_Monstre->x = j-RANGE_MONSTRE;
             Point_Monstre->y = i;
-              isOk =1;
+            isOk =1;
 
             }
             else
@@ -749,6 +747,55 @@ void Deplace_Monstre( int Tab_Monstre[HAUTEUR][LARGEUR],coord_Monstre *Point_Mon
         }
 
 }
+
+void ecran_victoire(int *pn_Tour)
+{
+    system("cls");
+    color(6,0);
+    printf("        (                   ) (   (       \n");
+    color(12,0);
+    printf("        )\\ )  (    *   ) ( /( )\\ ))\\ )    \n");
+    color(6,0);
+    printf(" (   ( (()/(  )\\ ` )  /( )\\()|()/(()/((   \n");
+    color(12,0);
+    printf(" )\\  )\\ /(_)|((_) ( )(_)|(_)\\ /(_))(_))\\  \n");
+    color(4,0);
+    printf("((_)((_|_)) )\\___(_(_())  ((_|_))(_))((_) \n");
+    color(15,0);
+    printf("\\ \\ / /|_ _| / __|_   _| / _ \\ |_ _| | _ \\ | __| \n");
+    printf(" \\ V /  | | | (__  | |  | (_) | | |  |   / | _| \n");
+    printf("  \\_/  |___| \\___| |_|   \\___/ |___| |_|_\\ | __| \n\n");
+
+    printf("BRAVO !!!\n\n");
+    printf("Vous avez battu le MONK C en %d tour !\n\n",*pn_Tour);
+
+}
+
+void ecran_defaite()
+{
+    system("cls");
+    color(10,0);
+    printf("oooooooooo.   oooooooooooo oooooooooooo   .o.       ooooo ooooooooooooo oooooooooooo \n");
+    printf("`888'   `Y8b  `888'     `8 `888'     `8  .888.      `888' 8'   888   `8 `888'     `8 \n");
+    printf(" 888      888  888          888         .8'888.      888       888       888         \n");
+    printf(" 888      888  888oooo8     888oooo8   .8' `888.     888       888       888oooo8    \n");
+    printf(" 888      888  888    '     888    '  .88ooo8888.    888       888       888    '    \n");
+    printf(" 888     d88'  888       o  888      .8'     `888.   888       888       888       o \n");
+    printf("o888bood8P'   o888ooooood8 o888o    o88o     o8888o o888o     o888o     o888ooooood8 \n\n");
+    color(15,0);
+
+    printf("Dommage vous avez perdu !\n");
+    printf("Le Monstre a mange tous vos pisteurs !\n");
+
+}
+
+
+
+
+
+
+
+
 
 //FONCTION__________________________________________________________________________________________________________________________________________________
 
