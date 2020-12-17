@@ -1,7 +1,13 @@
 # depslib dependency file v1.0
-1608176016 source:d:\algo\c\td_sdl\monk_c_hugo_eitel\monk_c_hugo_eitel\main.c
+1608224932 source:d:\algo\c\td_sdl\monk_c_hugo_eitel\monk_c_hugo_eitel\main.c
+	"define.h"
+
+1608224878 d:\algo\c\td_sdl\monk_c_hugo_eitel\monk_c_hugo_eitel\define.h
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
 	<time.h>
+
+1608231863 source:d:\algo\c\td_sdl\monk_c_hugo_eitel\monk_c_hugo_eitel\procedure_fonction.c
+	"define.h"
 
