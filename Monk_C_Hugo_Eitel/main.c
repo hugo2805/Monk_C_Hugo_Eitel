@@ -3,15 +3,18 @@
 
 //PROGRAMME_PRINCIPAL______________________________________________________________________________________________________________________
 
-int main()
+int main(int argc, char *argv[])
 {
         // Déclaration des variables
+
 
     int n_pisteur;
     int n_tour = 1;
     int vie_Monstre = VIE_MONSTRE;
     int *pn_pisteur = &n_pisteur;
     coord_Monstre Point_Monstre;
+    renderer tRender;
+
 
 
 
@@ -44,6 +47,24 @@ int main()
    {'*',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','*'},
    {'*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*'}
    };
+
+     //Initialisation de la SDL2
+    if(SDL_Init(SDL_INIT_EVERYTHING)!=0){
+
+        SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
+        return 1;
+    }else{
+        //Set window
+        tRender.pWindow=SDL_CreateWindow("Monk-C",640,480,WINDOW_WIDTH,WINDOW_HEIGHT,
+                                 SDL_WINDOW_SHOWN);
+        //Set rendu
+        if(tRender.pWindow){
+
+            tRender.pRenderer=SDL_CreateRenderer(tRender.pWindow,-1,SDL_RENDERER_PRESENTVSYNC);
+
+        }
+    }
+
 
     //Appel des differentes fonction et procedures
     init_tab_traces(Tab_Traces_Monstre, Tab_Traces_Pisteur);

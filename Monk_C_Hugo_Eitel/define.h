@@ -6,6 +6,12 @@
 #include <windows.h>
 #include <time.h>
 
+//AJOUT_DE_LA_BIBLIOTHEQUE_2D_SDL2_______________________________________________________________________________________________________
+#include <SDL2/SDL.h>
+
+#define WINDOW_WIDTH 1024
+#define WINDOW_HEIGHT 780
+
 
 
 // ON_DEFINIE_LES_PRIMITIVES______________________________________________________________________________________________________________
@@ -31,6 +37,15 @@
         int x;
         int y;
     } coord_Monstre;
+
+    typedef  struct renderer {
+
+    SDL_Window * pWindow;
+    SDL_Renderer * pRenderer;
+
+    } renderer;
+
+
 
 //PROTOTYPES_______________________________________________________________________________________________________________________________
 
