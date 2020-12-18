@@ -69,12 +69,12 @@ void Affiche_Regles()
     printf("Avant de debuter le jeu vous choisirez la position de base de chacun de vos pisteurs.\n");
     printf("A chaque tour vos pisteurs, vous informent si il y a des traces du monstre ou le monstre lui meme.\n");
     printf("Dans le cas ou ils detectent des traces, ils vous informeront de la fraicheur de celles-ci,\n");
-    printf("La fraicheur des traces est determinee par une valeur entre 2 et 15, plus la valeur est elevee, plus elles sont fraiche.");
+    printf("La fraicheur des traces est determinee par une valeur entre 2 et 15, plus la valeur est elevee, plus elles sont fraiches.");
     printf("Si votre pisteur vous informe qu'il voit le monstre, vous aurez la possibilite de tirer. Votre tir sera soumit a un\n");
     printf("lancement de des, vous offrant un taux de 40 pourcent de reussite de celui-ci.\n");
-    printf("Une fois que tous vos pisteurs vous ont informe, vous pouvez les deplacer dans un rayon de 4 cases sur les axes X ou Y,");
+    printf("Une fois que tous vos pisteurs vous ont informes, vous pouvez les deplacer dans un rayon de 4 cases sur les axes X ou Y,");
     printf("autour de leur position actuelle. Une fois que vous aurez deplace tous vos pisteurs, c'est le monstre qui se deplacera,\n");
-    printf("dans un rayon d'une case sur l'axe X ou Y. Le monstre dispose de 4 vie.\n");
+    printf("dans un rayon d'une case sur l'axe X ou Y. Le monstre dispose de 4 vies.\n");
     printf("La partie se termine si vous n'avez plus de pisteur ou que vous avez tue le monstre.\n\n");
     printf("                                            BONNE CHANCE AVENTURIER !!!\n");
     printf("\n");
@@ -514,7 +514,7 @@ void Deplace_Pisteur(int *pn_pisteurs, char Terrain[HAUTEUR][LARGEUR], int *pn_T
         }
          while (cb_Case < 0 || cb_Case > 4)
         {
-        printf("De combien de case voulez vous deplacer le pisteur %d, valeur entre 0 et 4 :\n",n_i);
+        printf("De combien de cases voulez vous deplacer le pisteur %d, valeur entre 0 et 4 :\n",n_i);
         scanf("%d", &cb_Case);
         fflush(stdin);
 
