@@ -52,7 +52,8 @@ extern void Rapport_Pisteur(int *pn_pisteurs, struct coord_Pisteur T_Pisteur[PIS
 extern int Tir();
 extern void Deplace_Pisteur(int *pn_pisteurs, char Terrain[HAUTEUR][LARGEUR], int *pn_Tour, struct coord_Pisteur T_Pisteur[PISTEUR_MAX]);
 extern void Deplace_Monstre( int Tab_Monstre[HAUTEUR][LARGEUR],coord_Monstre *Point_Monstre,  char Terrain[HAUTEUR][LARGEUR],int T_Traces_Pist[HAUTEUR][LARGEUR]);
-
+extern void ecran_victoire(&n_tour);
+extern void ecran_defaite();
 
 
 

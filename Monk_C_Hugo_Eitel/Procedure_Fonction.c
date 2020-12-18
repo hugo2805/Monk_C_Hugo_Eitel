@@ -256,6 +256,9 @@ void Placement_Monstre(char Terrain[HAUTEUR][LARGEUR], int Tab_Monstre[HAUTEUR][
              srand(time(NULL));
             Monstre_x = (rand()%(RMAX_X)+1);
             Monstre_y = (rand()%(RMAX_Y)+1);
+            //force la position du monstre
+            //Monstre_x = 8;
+           // Monstre_y = 8;
             i = Monstre_y;
             j = Monstre_x;
 
